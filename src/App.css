@@ -1,15 +1,12 @@
-.form {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.input {
-  margin-left: 15px;
-}
-
-button {
-  display: block;
+.container {
+  width: 260px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  padding: 30px;
+  background-color: rgb(55, 255, 172);
+}
+
+h2:first-child {
+  margin-top: 0;
 }

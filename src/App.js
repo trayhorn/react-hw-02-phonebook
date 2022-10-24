@@ -1,38 +1,61 @@
 import React, { Component } from 'react';
+import { nanoid } from 'nanoid';
+import Form from './components/ContactsForm/Form';
+import ContactsList from './components/ContactsList/Contacts.List';
+import Filter from './components/ContactsFilter/Filter';
 import './App.css';
+import initialContacts from './initialContacts.json';
 
 class App extends Component {
   state = {
-    contacts: [],
-    name: ''
+    contacts: initialContacts,
+    filter: '',
   }
 
-  handleChange = e => {
-    this.setState({name: e.target.value})
+  addContact = ({ name, number }) => {
+    const contact = {
+      id: nanoid(),
+      name,
+      number
+    };
+
+    this.setState(({ contacts }) => ({
+      contacts: [...contacts, contact]
+    }));
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    console.log(this.state);
+  changeFilter = e => {
+    this.setState({ filter: e.target.value });
   }
+
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    const nomalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(nomalizedFilter));
+  }
+
 
   render() {
+    const { filter } = this.state;
+
+    const visibleContacts = this.getVisibleContacts();
+
     return (
-      <form className='form' onSubmit={this.handleSubmit}>
-        <label className='label'>
-          Name
-          <input
-            className='input'
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            onChange={this.handleChange}
-          />
-        </label>
-        <button type='submit'>Add contact</button>
-      </form>
+      <div className='container'>
+        <h2>Phonebook</h2>
+        <Form
+          onSubmit={this.addContact}
+        />
+        <h2>Contacts</h2>
+        <Filter
+          value={filter}
+          onChange={this.changeFilter}
+        />
+        <ContactsList
+          contacts={visibleContacts}
+        />
+      </div>
     )
   }
 }
