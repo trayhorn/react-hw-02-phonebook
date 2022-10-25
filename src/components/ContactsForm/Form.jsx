@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import s from './Form.module.css';
 
-export default class Form extends Component {
+export default class ContactForm extends Component {
   state = {
     name: '',
     number: ''
@@ -38,6 +38,7 @@ export default class Form extends Component {
             onChange={this.handleChange}
           />
         </label>
+        <button>Delete</button>
         <label>
           Phone number
           <input

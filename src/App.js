@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
-import Form from './components/ContactsForm/Form';
+import ContactForm from './components/ContactsForm/Form';
 import ContactsList from './components/ContactsList/Contacts.List';
-import Filter from './components/ContactsFilter/Filter';
+import ContactFilter from './components/ContactsFilter/Filter';
 import './App.css';
 import initialContacts from './initialContacts.json';
 
@@ -13,15 +13,28 @@ class App extends Component {
   }
 
   addContact = ({ name, number }) => {
+    let isAdded = false;
+
+    this.state.contacts.map(contact => {
+      if (contact.name === name) {
+        alert(`You already have ${name} in contacts`);
+        isAdded = true;
+      }
+    })
+
+    if (isAdded) {
+      return;
+    }
+
     const contact = {
       id: nanoid(),
       name,
       number
     };
 
-    this.setState(({ contacts }) => ({
-      contacts: [...contacts, contact]
-    }));
+    this.setState(({ contacts }) => {
+      return { contacts: [...contacts, contact] }
+    })
   }
 
   changeFilter = e => {
@@ -43,12 +56,12 @@ class App extends Component {
 
     return (
       <div className='container'>
-        <h2>Phonebook</h2>
-        <Form
+        <h1>Phonebook</h1>
+        <ContactForm
           onSubmit={this.addContact}
         />
         <h2>Contacts</h2>
-        <Filter
+        <ContactFilter
           value={filter}
           onChange={this.changeFilter}
         />

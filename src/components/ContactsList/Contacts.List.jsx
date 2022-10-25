@@ -9,6 +9,7 @@ const ContactsList = ({contacts}) => {
             key={contact.id}
             className={s.item}>
             {contact.name}: {contact.number}
+            <button className={s.deleteButton}>Delete</button>
           </li>
         )
       })}
