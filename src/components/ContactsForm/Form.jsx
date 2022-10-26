@@ -38,7 +38,6 @@ export default class ContactForm extends Component {
             onChange={this.handleChange}
           />
         </label>
-        <button>Delete</button>
         <label>
           Phone number
           <input
