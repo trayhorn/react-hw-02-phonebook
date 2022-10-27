@@ -6,6 +6,8 @@
   margin-bottom: 10px;
   outline: none;
   border: none;
+  border-radius: 10px;
+  background-color: #F6E4F2;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 

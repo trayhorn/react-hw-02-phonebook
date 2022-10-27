@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import './App.css';
+import initialContacts from './initialContacts.json';
 import ContactForm from './components/ContactsForm/Form';
 import ContactsList from './components/ContactsList/Contacts.List';
 import ContactFilter from './components/ContactsFilter/Filter';
-import './App.css';
-import initialContacts from './initialContacts.json';
+
 
 class App extends Component {
   state = {
@@ -12,17 +13,10 @@ class App extends Component {
     filter: '',
   }
 
+
   addContact = ({ name, number }) => {
-    let isAdded = false;
 
-    this.state.contacts.map(contact => {
-      if (contact.name === name) {
-        alert(`You already have ${name} in contacts`);
-        isAdded = true;
-      }
-    })
-
-    if (isAdded) {
+    if (this.checkIsAdded(name)) {
       return;
     }
 
@@ -37,7 +31,21 @@ class App extends Component {
     })
   }
 
-  deleteContact = (contactId) => {
+  checkIsAdded = name => {
+    const { contacts } = this.state;
+    let isAdded = false;
+
+    contacts.map(contact => {
+      if (contact.name === name) {
+        alert(`You already have ${name} in contacts`);
+        isAdded = true;
+      }
+    })
+
+    return isAdded;
+  }
+
+  deleteContact = contactId => {
     this.setState(({contacts}) => ({
       contacts: contacts.filter(contact =>
         contact.id != contactId),

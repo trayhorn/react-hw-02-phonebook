@@ -1,10 +1,16 @@
+/* rgb(148, 176, 255)
+rgb(55, 255, 172) 
+tomato*/
+
 .container {
   width: 260px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
   padding: 30px;
-  background-color: rgb(55, 255, 172);
+  border-radius: 7px;
+  border: 8px solid #E6D9B3;
+  background-color: #8C99D9;
 }
 
 h1 {
