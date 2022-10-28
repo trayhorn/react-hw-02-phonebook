@@ -1,63 +1,58 @@
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import React, { Component } from 'react';
 import s from './Form.module.css';
-import PropTypes from 'prop-types';
+
+const initialValues = {
+  name: '',
+  number: ''
+}
+
+const addContactSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  number: Yup.string().min(1).max(10).required(),
+});
 
 export default class ContactForm extends Component {
-  state = {
-    name: '',
-    number: ''
-  }
-
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.setState({ name: '', number: '' });
+  handleSubmit = (values, { resetForm }) => {
+    console.log(values);
+    this.props.onSubmit(values);
+    resetForm();
   }
 
   render() {
-    const { name, number } = this.state;
 
     return (
-      <form
+      <Formik
+        validationSchema={addContactSchema}
+        initialValues={initialValues}
         onSubmit={this.handleSubmit}
-        autoComplete="off">
-        <label>
-          Name
-          <input
-            className={s.input}
-            type="text"
-            name="name"
-            value={name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            onChange={this.handleChange}
-          />
-        </label>
-        <label>
-          Phone number
-          <input
-            className={s.input}
-            type="tel"
-            name="number"
-            value={number}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            onChange={this.handleChange}
-          />
-        </label>
-        <button className={s.button} type='submit'>Add contact</button>
-      </form>
+      >
+        <Form
+          autoComplete="off">
+          <label>
+            Name
+            <Field
+              className={s.input}
+              type="text"
+              name="name"
+              required
+            />
+            <ErrorMessage name="name" />
+          </label>
+          <label>
+            Phone number
+            <Field
+              className={s.input}
+              type="tel"
+              name="number"
+              required
+            />
+            <ErrorMessage name="number" />
+          </label>
+          <button className={s.button} type='submit'>Add contact</button>
+        </Form>
+      </Formik>
     )
   }
-}
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
 }

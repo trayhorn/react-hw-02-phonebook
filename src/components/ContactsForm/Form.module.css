@@ -10,6 +10,9 @@
   background-color: #F6E4F2;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+.input:focus {
+  outline: 2px solid #6670CC;
+} 
 
 .button {
   padding: 7px 10px;
@@ -20,6 +23,7 @@
   color: #FFF;
   display: block;
   margin-top: 20px;
+  cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition: transform 150ms linear;
 }
