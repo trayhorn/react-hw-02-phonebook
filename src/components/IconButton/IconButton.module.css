@@ -1,0 +1,12 @@
+.deleteButton {
+  padding: 7.5px;
+  margin-right: 0;
+
+  width: 30px;
+  height: 30px;
+
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(77, 123, 248);
+  cursor: pointer;
+}

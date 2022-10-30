@@ -15,7 +15,6 @@ const addContactSchema = Yup.object().shape({
 
 export default class ContactForm extends Component {
   handleSubmit = (values, { resetForm }) => {
-    console.log(values);
     this.props.onSubmit(values);
     resetForm();
   }
