@@ -10,3 +10,7 @@
   background-color: rgb(77, 123, 248);
   cursor: pointer;
 }
+
+.deleteButton:hover {
+  background-color: #223fce;
+}
