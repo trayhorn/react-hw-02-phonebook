@@ -29,6 +29,7 @@ export default class ContactForm extends Component {
         onSubmit={this.handleSubmit}
       >
         <Form
+          className={s.form}
           autoComplete="off">
           <label>
             Name
@@ -38,7 +39,7 @@ export default class ContactForm extends Component {
               name="name"
               required
             />
-            <ErrorMessage name="name" />
+            {/* <ErrorMessage name="name" /> */}
           </label>
           <label>
             Phone number
@@ -48,9 +49,18 @@ export default class ContactForm extends Component {
               name="number"
               required
             />
-            <ErrorMessage name="number" />
+            {/* <ErrorMessage name="number" /> */}
           </label>
-          <button className={s.button} type='submit'>Add contact</button>
+          <div className={s.buttonContainer}>
+            <button className={s.button} type='submit'>
+              Add contact
+            </button>
+            <button
+              className={s.button}
+              onClick={this.props.closeModal}>
+              Back
+            </button>
+          </div>
         </Form>
       </Formik>
     )

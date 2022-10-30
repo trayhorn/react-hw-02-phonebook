@@ -22,3 +22,20 @@ h2 {
   margin-top: 30px;
   font-family: Montserrat, sans-serif;
 }
+
+.openModalButton {
+  padding: 7px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(77, 123, 248);
+  font-size: 16px;
+  color: #FFF;
+  display: block;
+  margin-top: 20px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition: transform 150ms linear;
+}
+.openModalButton:hover {
+  transform: scale(1.05);
+}

@@ -5,12 +5,14 @@ import initialContacts from './initialContacts.json';
 import ContactForm from './components/ContactsForm/Form';
 import ContactsList from './components/ContactsList/Contacts.List';
 import ContactFilter from './components/ContactsFilter/Filter';
+import Modal from './components/Modal/Modal';
 
 
 class App extends Component {
   state = {
     contacts: initialContacts,
     filter: '',
+    isModalOpen: false
   }
 
 
@@ -63,6 +65,12 @@ class App extends Component {
       contact.name.toLowerCase().includes(nomalizedFilter));
   }
 
+  toggleModal = () => {
+    this.setState(({isModalOpen}) => {
+      return {isModalOpen: !isModalOpen}
+    })
+  }
+
 
   render() {
     const { filter } = this.state;
@@ -70,10 +78,17 @@ class App extends Component {
 
     return (
       <div className='container'>
+        {this.state.isModalOpen && (
+          <Modal>
+            <ContactForm
+              closeModal={this.toggleModal}
+              onSubmit={this.addContact}
+            />
+          </Modal>
+        )}
         <h1>Phonebook</h1>
-        <ContactForm
-          onSubmit={this.addContact}
-        />
+        <button onClick={this.toggleModal}
+        className="openModalButton">Add new contact</button>
         <h2>Contacts</h2>
         <ContactFilter
           value={filter}
