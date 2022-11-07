@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import initialContacts from './initialContacts.json';
 import ContactForm from './components/ContactsForm/Form';
@@ -23,7 +25,7 @@ class App extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevState) {
     if (prevState.contacts !== this.state.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
     }
@@ -52,7 +54,7 @@ class App extends Component {
 
     contacts.map(contact => {
       if (contact.name === name) {
-        alert(`You already have ${name} in contacts`);
+        toast.error(`You already have ${name} in contacts`);
         isAdded = true;
       }
     })
@@ -110,6 +112,10 @@ class App extends Component {
         <ContactsList
           contacts={visibleContacts}
           onDeleteContact={this.deleteContact}
+        />
+        <ToastContainer
+          autoClose={3000}
+          position="top-center"
         />
       </div>
     )
