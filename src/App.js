@@ -1,39 +1,36 @@
-import React, { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import './App.css';
+import Modal from './components/Modal/Modal';
 import initialContacts from './initialContacts.json';
 import ContactForm from './components/ContactsForm/Form';
 import ContactsList from './components/ContactsList/Contacts.List';
 import ContactFilter from './components/ContactsFilter/Filter';
-import Modal from './components/Modal/Modal';
+
+const useLocalStorage = (key, defaultValue) => {
+  const [state, setState] = useState(() => {
+    return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue
+  })
+
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(state))
+  }, [key, state])
+
+  return [state, setState];
+}
 
 
-class App extends Component {
-  state = {
-    contacts: initialContacts,
-    filter: '',
-    isModalOpen: false
-  }
+const App = () => {
+  const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
+  const [filter, setFilter] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-  componentDidMount() {
-    const storage = JSON.parse(localStorage.getItem('contacts'));
-    if (storage) {
-      this.setState({contacts: storage})
-    }
-  }
-
-  componentDidUpdate(prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
-    }
-  }
-
-  addContact = ({ name, number }) => {
-
-    if (this.checkIsAdded(name)) {
+  const addContact = ({ name, number }) => {
+    if (checkIsAdded(name)) {
       return;
     }
 
@@ -43,13 +40,10 @@ class App extends Component {
       number
     };
 
-    this.setState(({ contacts }) => {
-      return { contacts: [...contacts, contact] }
-    })
+    setContacts(prevState => [...prevState, contact]);
   }
 
-  checkIsAdded = name => {
-    const { contacts } = this.state;
+  const checkIsAdded = name => {
     let isAdded = false;
 
     contacts.map(contact => {
@@ -62,64 +56,60 @@ class App extends Component {
     return isAdded;
   }
 
-  deleteContact = contactId => {
-    this.setState(({contacts}) => ({
-      contacts: contacts.filter(contact =>
-        contact.id != contactId),
-    }))
+  const deleteContact = contactId => {
+    setContacts(prevState => {
+      return prevState.filter(contact =>
+        contact.id != contactId)
+    })
   }
 
-  changeFilter = e => {
-    this.setState({ filter: e.target.value });
+  const changeFilter = e => {
+    setFilter(e.target.value);
   }
 
-  getVisibleContacts = () => {
-    const { contacts, filter } = this.state;
+  const getVisibleContacts = () => {
     const nomalizedFilter = filter.toLowerCase();
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(nomalizedFilter));
   }
 
-  toggleModal = () => {
-    this.setState(({isModalOpen}) => {
-      return {isModalOpen: !isModalOpen}
-    })
+  const toggleModal = () => {
+    setIsModalOpen(prevState => !prevState)
   }
 
+  const visibleContacts = getVisibleContacts();
 
-  render() {
-    const { filter } = this.state;
-    const visibleContacts = this.getVisibleContacts();
-
-    return (
-      <div className='container'>
-        {this.state.isModalOpen && (
-          <Modal>
-            <ContactForm
-              closeModal={this.toggleModal}
-              onSubmit={this.addContact}
-            />
-          </Modal>
-        )}
-        <h1>Phonebook</h1>
-        <button onClick={this.toggleModal}
-        className="openModalButton">Add new contact</button>
-        <h2>Contacts</h2>
-        <ContactFilter
-          value={filter}
-          onChange={this.changeFilter}
-        />
-        <ContactsList
-          contacts={visibleContacts}
-          onDeleteContact={this.deleteContact}
-        />
-        <ToastContainer
-          autoClose={3000}
-          position="top-center"
-        />
-      </div>
-    )
-  }
+  return (
+    <div className='container'>
+      {isModalOpen && (
+        <Modal>
+          <ContactForm
+            closeModal={toggleModal}
+            onSubmit={addContact}
+          />
+        </Modal>
+      )}
+      <h1>Phonebook</h1>
+      <button
+        onClick={toggleModal}
+        className="openModalButton"
+      >Add new
+      </button>
+      <h2>Contacts</h2>
+      <ContactFilter
+        value={filter}
+        onChange={changeFilter}
+      />
+      <ContactsList
+        contacts={visibleContacts}
+        onDeleteContact={deleteContact}
+      />
+      <ToastContainer
+        autoClose={3000}
+        position="top-center"
+      />
+    </div>
+  )
 }
 
 export default App;

@@ -4,7 +4,6 @@ import IconButton from '../IconButton/IconButton';
 import { ReactComponent as DeleteIcon } from '../icons/cross.svg';
 
 const ContactsList = ({ contacts, onDeleteContact }) => {
-  
 
   return (
     <ul className={s.list}>
